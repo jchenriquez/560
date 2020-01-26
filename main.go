@@ -6,39 +6,21 @@ func key (i, j int) string {
   return fmt.Sprintf("%d,%d", i, j)
 }
 
-func subarraySumH(nums []int, i, j, k int, fullSum int, seen map[string]bool) int {
-  ky := key(i, j)
+func subarraySumH(nums []int, i int, k int) int {
 
-  if _, saw := seen[ky]; saw {
+  if i >= len(nums) {
     return 0
   }
 
-  seen[ky] = true
-  var increment int 
-
-  if fullSum == k { 
-    increment++
+  if k - nums[i] == 0 {
+    return 1
   }
 
-  if  i == j {
-    return increment
-  }  
-
-  return increment + subarraySumH(nums, i, j-1, k, fullSum-nums[j], seen) + subarraySumH(nums, i+1, j, k, fullSum-nums[i], seen)
-
+  return subarraySumH(nums, i+1, k) + subarraySumH(nums, i+1, k-nums[i])
 }
 
 func subarraySum(nums []int, k int) int {
-    seen := make(map[string]bool, len(nums))
-    var fullSum int
-
-    for _, num := range nums {
-      fullSum+=num
-    }
-
-    count := subarraySumH(nums, 0, len(nums)-1, k, fullSum, seen)
-
-    return count
+  return subarraySumH(nums, 0, k)
 }
 
 func main() {
